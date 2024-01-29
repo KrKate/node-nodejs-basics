@@ -1,22 +1,20 @@
 import path from 'path';
 import { release, version } from 'os';
 import { createServer } from 'http';
-import './files/c.js';
-import unknownObjectA from './files/a.json';
-import unknownObjectB from './files/b.json';
+import fs from 'fs/promises';
 
 const random = Math.random();
 
 let unknownObject;
 
 if (random > 0.5) {
-    unknownObject = unknownObjectA;
+    unknownObject = JSON.parse(await fs.readFile(new URL('./files/a.json', import.meta.url)));
 } else {
-    unknownObject = unknownObjectB;
+    unknownObject = JSON.parse(await fs.readFile(new URL('./files/b.json', import.meta.url)));
 }
 
-console.log(`Release ${release}`);
-console.log(`Version ${version}`);
+console.log(`Release ${release()}`);
+console.log(`Version ${version()}`);
 console.log(`Path segment separator is "${path.sep}"`);
 
 console.log(`Path to current file is ${import.meta.url}`);
@@ -39,3 +37,4 @@ export {
     unknownObject,
     myServer,
 };
+
